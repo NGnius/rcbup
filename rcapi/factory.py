@@ -28,6 +28,11 @@ def factory_bot(token, id):
     response = requests.get(url, headers=headers)
     return response.json()['response']
 
+def factory_thumbnail(url):
+    '''(str) -> bytes
+    downloads the raw thumbnail data'''
+    return requests.get(url).content
+
 def make_search_body(search='', weapon=None, movement=None, maxCpu=2000, minCpu=100, maxRr=100000000, minRr=0, player=None):
     ''' ([...]) -> dict
     params: search parameters, overwrite a param to change it from default
