@@ -11,6 +11,9 @@ This is a command line thing. You will need Python3.X installed;
 * On Mac: I don't know, I don't have $1k to test it out
 * On Windows: Download & install [here](https://www.python.org/downloads/). If you don't have another Python already installed, try `python` or `py` to invoke
 
+To download this project, click `Clone or download` and then `Download ZIP`.
+Don't forget to extract the file!
+
 Basic usage is explained with `python3 main.py --help` (replace `python3` as described above).
 You will need to be in the directory you downloaded this for it to work.
 You can use `cd` to move around, and `dir` or `ls` to see what's around you.

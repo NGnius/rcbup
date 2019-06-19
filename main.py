@@ -51,7 +51,7 @@ def do_login(args):
     if args.password is None and args.username is None:
         return auth.fj_login()
     elif args.password is not None and args.username is not None:
-        return auth.fj_login(username = args.u, password=args.p)
+        return auth.fj_login(name=args.username, password=args.password)
     else:
         print('! Password and username must both be present or both missing.')
         return
