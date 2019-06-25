@@ -26,24 +26,30 @@ def main(args):
 
     calls = 1
     threads = list()
+    already_seen = list()
     for bot in robots:
-        if calls % CALLS_BEFORE_REFRESH == 0 and args.batch:
-            print('Refreshing token...')
-            token = do_login(args)['Token']
-        save_path = join(args.out, remove_bad_chars(bot['itemName']+'-'+str(bot['itemId']))+'.'+args.extension.lstrip('.'))
-        print('Downloading %s to %s...' % (bot['itemName'], save_path))
-        bot_info = factory.factory_bot(token, bot['itemId'])
-        with open(save_path, 'w') as f:
-            json.dump(bot_info, f, indent=4)
-        if args.thumbnail is True:
-            # this in an AWS CDN, idc about spamming it
-            threads.append(Thread(target=save_thumbnail, args=(bot_info['name']+'-'+str(bot['itemId']),bot_info['thumbnail'], args)))
-            threads[-1].start()
-        if calls == args.max and args.max >= 0:
-            break
-        calls += 1
-        if args.batch:
-            time.sleep(SLOWDOWN)
+        if bot['itemId'] not in already_seen:  # ignore duplicates returned by API
+            already_seen.append(bot['itemId'])
+            if calls % CALLS_BEFORE_REFRESH == 0 and args.batch:
+                print('Refreshing token...')
+                token = do_login(args)['Token']
+            save_path = join(args.out, remove_bad_chars(bot['itemName']+'-'+str(bot['itemId']))+'.'+args.extension.lstrip('.'))
+            print('Downloading %s to %s...' % (bot['itemName'], save_path))
+            bot_info = factory.factory_bot(token, bot['itemId'])
+            with open(save_path, 'w') as f:
+                json.dump(bot_info, f, indent=4)
+            if args.thumbnail is True:
+                # this in an AWS CDN, idc about spamming it
+                threads.append(Thread(target=save_thumbnail, args=(bot_info['name']+'-'+str(bot['itemId']),bot_info['thumbnail'], args)))
+                threads[-1].start()
+            if calls == args.max and args.max >= 0:
+                break
+            calls += 1
+            if args.batch:
+                time.sleep(SLOWDOWN)
+        else:
+            pass
+            # print('Ignoring %s duplicate (already downloaded)' % (bot['itemName']))
     for t in threads:
         t.join()
 
