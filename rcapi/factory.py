@@ -33,7 +33,7 @@ def factory_thumbnail(url):
     downloads the raw thumbnail data'''
     return requests.get(url).content
 
-def make_search_body(search='', weapon=None, movement=None, maxCpu=2000, minCpu=0, maxRr=1000000000, minRr=0, player=None):
+def make_search_body(search='', weapon=None, movement=None, maxCpu=10000, minCpu=0, maxRr=1000000000, minRr=0, player=None):
     ''' ([...]) -> dict
     params: search parameters, overwrite a param to change it from default
     see .misc.WEAPONS and .misc.MOVEMENTS for valid weapon & movement names (respectively)
